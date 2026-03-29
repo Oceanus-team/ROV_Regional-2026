@@ -1,0 +1,67 @@
+🌊 Oceanus ROV – Python Control & Surface Systems
+📌 Overview
+
+This module contains all high-level control, visualization, and AI components of the Oceanus ROV system.
+
+It is responsible for:
+
+🎮 Manual control via joystick
+📡 Serial communication with the ROV
+🖥️ Surface station GUI (multi-camera monitoring)
+📊 Float data acquisition & graphing
+🦀 Computer vision (crab detection using YOLO)
+🧠 Modules
+🎮 1. Joystick Control (control.py)
+Functionality
+Reads controller input using pygame
+Auto-detects FT232 serial ports
+Sends real-time commands to two Arduinos
+Receives telemetry data (IMU, voltage, leak)
+Communication Protocol
+
+Outgoing packet:
+
+ARM RL1 0 ESCUP1 ESCFB1 # FORK RL2 0 ESCUP2 ESCFB2
+Key Concepts
+Deadzone filtering for joystick stability
+PWM mapping (1000–2000 µs for ESCs)
+Dual-channel communication (two serial ports)
+
+🖥️ 2. Surface Station GUI (Station_GUI.py)
+
+Functionality
+
+Supports full-screen camera view
+Provides:
+🛡 Safety button (emergency stop)
+
+🚀 Float task trigger
+Technologies
+PyQt6 (UI framework)
+OpenCV (camera streaming)
+Notes
+Serial communication is optional (GUI still runs without Arduino)
+Depth display is currently simulated
+
+📈 3. Float Data Graphing (float_graph.py)
+Functionality
+Connects to float Arduino via Bluetooth
+Sends command 'S'
+Receives logged depth data
+Plots depth vs time
+Data Format
+DATA START
+time,depth
+...
+DATA END
+Output
+Matplotlib graph
+Inverted Y-axis (depth increases downward)
+🦀 4. Crab Detection (crab_detector.py)
+Functionality
+Uses YOLOv8 (Ultralytics)
+Detects and counts green crabs
+Displays annotated image
+Detection Logic
+Class ID = 0 → Green crab
+Confidence threshold = 0.5
