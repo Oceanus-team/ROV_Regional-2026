@@ -1,0 +1,62 @@
+🌊 Oceanus ROV – Embedded Code
+📌 Overview
+
+This Arduino code controls the core behavior of the ROV.
+It handles movement, reads sensors, and communicates with the surface system.
+
+The code is split into two main parts:
+
+ROV Control
+Float Control
+⚙️ 1. ROV Control (ROV_Control.ino)
+🎯 Mission
+
+Control the ROV’s movement and continuously send sensor data to the surface.
+
+🔧 What it does
+Receives movement commands from Python
+Moves motors (forward, backward, stop)
+Controls thrusters using ESC signals
+Reads sensors:
+Orientation (Yaw, Pitch, Roll)
+Depth (pressure)
+Voltage & current
+Leak detection
+Sends all data back through Serial
+🔁 How it works
+Waits for a command from the PC
+Parses the command
+Updates motors and thrusters
+Reads sensors
+Sends telemetry back
+
+🌊 2. Float Control (Float_Control.ino)
+🎯 Mission
+
+Automatically control depth and record a depth profile.
+
+🔧 What it does
+Reads depth continuously
+Keeps the system within a target depth range
+Stores depth data over time
+Sends recorded data via Bluetooth when requested
+🔁 How it works
+Measures depth
+Decides:
+Too deep → go up
+Too shallow → go down
+In range → stop
+Saves depth every few seconds
+When it receives 'S':
+Sends all recorded data
+📡 Communication
+ROV Control
+Receives commands from Python
+Sends sensor data back
+Float Control
+Waits for 'S' command
+Sends:
+DATA START
+time,depth
+...
+DATA END
